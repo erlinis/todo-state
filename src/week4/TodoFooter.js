@@ -2,22 +2,23 @@ import React from "react";
 import PropTypes from 'prop-types';
 import TodoFilter from "./TodoFilter";
 
-export default function TodoFooter({
-  leftTodos
-}) {
+const taskFilters = [ 'all', 'active', 'completed' ];
+
+export default function TodoFooter({ leftTodos, currentFilter, onFilterChange}) {
   return (
     <footer className="footer">
       <span className="todo-count"><strong>{leftTodos}</strong> item left</span>
       <ul className="filters">
-        <li>
-          <TodoFilter selected url="#/">All</TodoFilter>
-        </li>
-        <li>
-          <TodoFilter selected url="#/active">Active</TodoFilter>
-        </li>
-        <li>
-          <TodoFilter selected url="#/completed">Completed</TodoFilter>
-        </li>
+        {
+         taskFilters.map( filter =>
+           <li key={filter}>
+             <TodoFilter
+               text={filter}
+               currentFilter={currentFilter}
+               onFilterChange={onFilterChange}/>
+           </li>
+         )
+        }
       </ul>
       <button className="clear-completed">Clear completed</button>
     </footer>
@@ -25,5 +26,7 @@ export default function TodoFooter({
 }
 
 TodoFooter.propTypes = {
-  leftTodos: PropTypes.number.isRequired
+  leftTodos: PropTypes.number.isRequired,
+  currentFilter: PropTypes.string.isRequired,
+  onFilterChange: PropTypes.func.isRequired
 };
